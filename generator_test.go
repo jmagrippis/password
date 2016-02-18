@@ -1,8 +1,8 @@
-package generator
+package password
 
 import (
-	"testing"
 	. "github.com/smartystreets/goconvey/convey"
+	"testing"
 )
 
 func TestGenerator(t *testing.T) {
@@ -10,19 +10,21 @@ func TestGenerator(t *testing.T) {
 
 	Convey("Given a new Generator with a set Dictionary and seed", t, func() {
 		dictionary := &Dictionary{
-			Adjectives: []string{"beautiful", "homely"},
-			Subjects: []string{"mermaids", "unicorns"},
-			Verbs: []string{"love", "fancy"},
-			Adverbs: []string{"cuddling", "slapping"},
-			Objects: []string{"teddy-bears", "diamonds"},
+			Adverbs:    []string{"cuddling", "slapping", "shouting", "jumping", "ducking", "mocking", "trotting", "galloping"},
+			Subjects:   []string{"mermaids", "unicorns", "lions", "piranhas", "cuttlefish", "llamas", "dragons"},
+			Verbs:      []string{"love", "fancy", "eat", "bring", "fear", "aggravate", "detest", "adore", "belittle", "ravish"},
+			Adjectives: []string{"beautiful", "homely", "magical", "posh", "excellent", "ravishing", "lovely"},
+			Objects:    []string{"teddy-bears", "diamonds", "buckets", "boxes", "dishes", "ornaments"},
 		}
-		generator = NewGenerator(dictionary, 1)
+		generator = NewGenerator(dictionary, 2)
 
 		Convey("Given I just run it with no extra settings", func() {
 
 			Convey("It returns secure passwords", func() {
-					So(generator.generate(), ShouldEqual, "beautiful unicorns fancy cuddling teddy-bears")
-				})
+				So(generator.generate(), ShouldEqual, "shouting unicorns eat posh buckets")
+				So(generator.generate(), ShouldEqual, "trotting lions fear ravishing teddy-bears")
+				So(generator.generate(), ShouldEqual, "trotting mermaids aggravate ravishing buckets")
+			})
 
 		})
 
@@ -53,6 +55,12 @@ func TestGenerator(t *testing.T) {
 		Convey("Given I change to suffix", func() {
 
 			Convey("It ends the sentence with the given suffix", nil)
+
+		})
+
+		Convey("Given I reseed", func() {
+
+			Convey("I get a different set of results", nil)
 
 		})
 
