@@ -2,6 +2,7 @@ package password
 
 import (
 	. "github.com/smartystreets/goconvey/convey"
+	"strings"
 	"testing"
 )
 
@@ -26,18 +27,32 @@ func TestGenerator(t *testing.T) {
 				So(generator.generate(), ShouldEqual, "trotting mermaids aggravate ravishing buckets")
 			})
 
+			Convey("Consisting of 5 words each", func() {
+				So(len(strings.Split(generator.generate(), " ")), ShouldEqual, 5)
+				So(len(strings.Split(generator.generate(), " ")), ShouldEqual, 5)
+				So(len(strings.Split(generator.generate(), " ")), ShouldEqual, 5)
+			})
 		})
 
 		Convey("Given I change the number of returned words to x", func() {
-
-			Convey("It returns a sentence of x words", nil)
-
+			Convey("It returns a sentence of x words", func() {
+				var x uint8 = 8
+				generator.setWordCount(x)
+				So(len(strings.Split(generator.generate(), " ")), ShouldEqual, x)
+				x = 15
+				generator.setWordCount(x)
+				So(len(strings.Split(generator.generate(), " ")), ShouldEqual, x)
+				x = 12
+				generator.setWordCount(x)
+				So(len(strings.Split(generator.generate(), " ")), ShouldEqual, x)
+			})
 		})
 
-		Convey("Given I change the number of returned words to below 4", func() {
-
+		Convey("When I try to change the number of returned words to below 4", func() {
 			Convey("It panics", nil)
-
+			So(generator.setWordCount(3), ShouldNotEqual, nil)
+			So(generator.setWordCount(1), ShouldNotEqual, nil)
+			So(generator.setWordCount(4), ShouldEqual, nil)
 		})
 
 		Convey("Given I change the delimiter to x", func() {
