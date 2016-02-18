@@ -35,6 +35,7 @@ func TestGenerator(t *testing.T) {
 		})
 
 		Convey("Given I change the number of returned words to x", func() {
+
 			Convey("It returns a sentence of x words", func() {
 				var x uint8 = 8
 				generator.setWordCount(x)
@@ -49,15 +50,29 @@ func TestGenerator(t *testing.T) {
 		})
 
 		Convey("When I try to change the number of returned words to below 4", func() {
-			Convey("It panics", nil)
-			So(generator.setWordCount(3), ShouldNotEqual, nil)
-			So(generator.setWordCount(1), ShouldNotEqual, nil)
-			So(generator.setWordCount(4), ShouldEqual, nil)
+
+			Convey("It returns an error", func() {
+				So(generator.setWordCount(3), ShouldNotEqual, nil)
+				So(generator.setWordCount(1), ShouldNotEqual, nil)
+				So(generator.setWordCount(4), ShouldEqual, nil)
+			})
 		})
 
 		Convey("Given I change the delimiter to x", func() {
 
-			Convey("It returns the sentence delimited by x instead of \" \"", nil)
+			Convey("It returns the sentence delimited by x instead of \" \"", func() {
+				var x string = "-"
+				generator.setDelimiter(x)
+				password := generator.generate()
+				So(password, ShouldEqual, "shouting-unicorns-eat-posh-buckets")
+				So(len(strings.Split(password, x)), ShouldEqual, 5)
+				x = "/"
+				generator.setDelimiter(x)
+				So(len(strings.Split(generator.generate(), x)), ShouldEqual, 5)
+				x = "1"
+				generator.setDelimiter(x)
+				So(len(strings.Split(generator.generate(), x)), ShouldEqual, 5)
+			})
 
 		})
 

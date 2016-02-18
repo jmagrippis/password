@@ -9,14 +9,14 @@ import (
 const (
 	minWordCount     uint8  = 4
 	defaultWordCount uint8  = 5
-	defaultSeparator string = " "
+	defaultDelimiter string = " "
 )
 
 type Generator struct {
 	dictionary *Dictionary
 	seed       int64
 	wordCount  uint8
-	separator  string
+	delimiter  string
 }
 
 type Dictionary struct {
@@ -40,7 +40,7 @@ func (g Generator) generate() string {
 	}
 	selected[key] = g.dictionary.Objects[rand.Intn(len(g.dictionary.Objects))]
 
-	return strings.Join(selected, g.separator)
+	return strings.Join(selected, g.delimiter)
 }
 
 // setWordCount sets the number of words returned by the generate function
@@ -52,6 +52,11 @@ func (g *Generator) setWordCount(wordCount uint8) error {
 	return nil
 }
 
+// setDelimeter sets the delimiter used to break up the words of the sentence
+func (g *Generator) setDelimiter(delimiter string) {
+	g.delimiter = delimiter
+}
+
 // NewGenerator seeds the RNG and returns a password Generator with the given Dictionary
 // and the default settings
 func NewGenerator(dictionary *Dictionary, seed int64) *Generator {
@@ -60,6 +65,6 @@ func NewGenerator(dictionary *Dictionary, seed int64) *Generator {
 		dictionary: dictionary,
 		seed:       seed,
 		wordCount:  defaultWordCount,
-		separator:  defaultSeparator,
+		delimiter:  defaultDelimiter,
 	}
 }
