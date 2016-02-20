@@ -59,6 +59,15 @@ func TestGenerator(t *testing.T) {
 			})
 		})
 
+		Convey("Given I set titleCase to true", func() {
+			generator.setTitleCase(true)
+			Convey("It returns a sentence with each first letter capitalized", func() {
+				So(generator.generate(), ShouldEqual, "Shouting Unicorns Eat Posh Buckets")
+				So(generator.generate(), ShouldEqual, "Trotting Lions Fear Portly Teddy-Bears")
+				So(generator.generate(), ShouldEqual, "Trotting Mermaids Aggravate Portly Buckets")
+			})
+		})
+
 		Convey("Given I change the delimiter to x", func() {
 
 			Convey("It returns the sentence delimited by x instead of \" \"", func() {
@@ -111,9 +120,9 @@ func TestGenerator(t *testing.T) {
 
 		})
 
-		Convey("Given I change to suffix", func() {
+		Convey("Given I change the suffix to x", func() {
 
-			Convey("It ends the sentence with the given suffix", func() {
+			Convey("It ends the sentence with x", func() {
 				var x string = "!"
 				generator.setSuffix(x)
 				password := generator.generate()
@@ -138,8 +147,12 @@ func TestGenerator(t *testing.T) {
 		})
 
 		Convey("Given I reseed", func() {
-
-			Convey("I get a different set of results", nil)
+			generator.reseed(4)
+			Convey("I get a different set of results", func() {
+				So(generator.generate(), ShouldNotEqual, "shouting unicorns eat posh buckets")
+				So(generator.generate(), ShouldNotEqual, "trotting lions fear portly teddy-bears")
+				So(generator.generate(), ShouldNotEqual, "trotting mermaids aggravate portly buckets")
+			})
 
 		})
 

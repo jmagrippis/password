@@ -13,12 +13,12 @@ const (
 )
 
 type Generator struct {
-	dictionary *Dictionary
-	seed       int64
-	wordCount  uint8
-	delimiter  string
-	prefix     string
-	suffix     string
+	dictionary   *Dictionary
+	wordCount    uint8
+	delimiter    string
+	prefix       string
+	suffix       string
+	useTitleCase bool
 }
 
 type Dictionary struct {
@@ -43,6 +43,10 @@ func (g Generator) generate() string {
 	selected[key] = g.dictionary.Objects[rand.Intn(len(g.dictionary.Objects))]
 
 	result := strings.Join(selected, g.delimiter)
+
+	if g.useTitleCase {
+		result = strings.Title(result)
+	}
 
 	if g.prefix != "" {
 		result = strings.Join([]string{g.prefix, result}, "")
@@ -79,13 +83,22 @@ func (g *Generator) setSuffix(suffix string) {
 	g.suffix = suffix
 }
 
+// setTitleCase defines whether the generator should use Title Case for its return strings
+func (g *Generator) setTitleCase(useTitleCase bool) {
+	g.useTitleCase = useTitleCase
+}
+
+// reseed reseeds the random number generator
+func (g *Generator) reseed(seed int64) {
+	rand.Seed(seed)
+}
+
 // NewGenerator seeds the RNG and returns a password Generator with the given Dictionary
 // and the default settings
 func NewGenerator(dictionary *Dictionary, seed int64) *Generator {
 	rand.Seed(seed)
 	return &Generator{
 		dictionary: dictionary,
-		seed:       seed,
 		wordCount:  defaultWordCount,
 		delimiter:  defaultDelimiter,
 	}
