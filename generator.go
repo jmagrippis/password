@@ -17,6 +17,7 @@ type Generator struct {
 	seed       int64
 	wordCount  uint8
 	delimiter  string
+	prefix     string
 }
 
 type Dictionary struct {
@@ -40,7 +41,13 @@ func (g Generator) generate() string {
 	}
 	selected[key] = g.dictionary.Objects[rand.Intn(len(g.dictionary.Objects))]
 
-	return strings.Join(selected, g.delimiter)
+	result := strings.Join(selected, g.delimiter)
+
+	if g.prefix != "" {
+		result = strings.Join([]string{g.prefix, result}, "")
+	}
+
+	return result
 }
 
 // setWordCount sets the number of words returned by the generate function
@@ -55,6 +62,11 @@ func (g *Generator) setWordCount(wordCount uint8) error {
 // setDelimeter sets the delimiter used to break up the words of the sentence
 func (g *Generator) setDelimiter(delimiter string) {
 	g.delimiter = delimiter
+}
+
+// setPrefix sets the prefix used to start the sentence
+func (g *Generator) setPrefix(prefix string) {
+	g.prefix = prefix
 }
 
 // NewGenerator seeds the RNG and returns a password Generator with the given Dictionary

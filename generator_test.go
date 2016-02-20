@@ -4,6 +4,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"strings"
 	"testing"
+	"unicode/utf8"
 )
 
 func TestGenerator(t *testing.T) {
@@ -66,9 +67,11 @@ func TestGenerator(t *testing.T) {
 				password := generator.generate()
 				So(password, ShouldEqual, "shouting-unicorns-eat-posh-buckets")
 				So(len(strings.Split(password, x)), ShouldEqual, 5)
+
 				x = "/"
 				generator.setDelimiter(x)
 				So(len(strings.Split(generator.generate(), x)), ShouldEqual, 5)
+
 				x = "1"
 				generator.setDelimiter(x)
 				So(len(strings.Split(generator.generate(), x)), ShouldEqual, 5)
@@ -76,9 +79,35 @@ func TestGenerator(t *testing.T) {
 
 		})
 
-		Convey("Given I change the prefix", func() {
+		Convey("Given I change the prefix to x", func() {
 
-			Convey("It prefaces the sentence with the given prefix", nil)
+			Convey("It prefaces the sentence prefixed by x", func() {
+				var x string = "!"
+				generator.setPrefix(x)
+				password := generator.generate()
+				So(password, ShouldEqual, "!shouting unicorns eat posh buckets")
+				first, _ := utf8.DecodeRuneInString(password)
+				So(string(first), ShouldEqual, x)
+
+				x = "爱"
+				generator.setPrefix(x)
+				password = generator.generate()
+				first, _ = utf8.DecodeRuneInString(password)
+				So(string(first), ShouldEqual, x)
+
+				x = "xoxo"
+				prefixCharacterCount := utf8.RuneCountInString(x)
+				generator.setPrefix(x)
+				password = generator.generate()
+				var startingCharacters = make([]string, prefixCharacterCount)
+				for i, character := range password {
+					startingCharacters[i] = string(character)
+					if i == prefixCharacterCount-1 {
+						break
+					}
+				}
+				So(strings.Join(startingCharacters, ""), ShouldEqual, x)
+			})
 
 		})
 
