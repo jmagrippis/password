@@ -19,7 +19,7 @@ generator = NewGenerator(dictionary, time.Now().UnixNano())
 pass := generator.generate()
 // pass = "shouting unicorns eat posh buckets"
 pass = generator.generate()
-// pass = "trotting lions fear ravishing teddy-bears"
+// pass = "trotting lions fear portly teddy-bears"
 ```
 
 ## Testing

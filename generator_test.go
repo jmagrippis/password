@@ -14,7 +14,7 @@ func TestGenerator(t *testing.T) {
 			Adverbs:    []string{"cuddling", "slapping", "shouting", "jumping", "ducking", "mocking", "trotting", "galloping"},
 			Subjects:   []string{"mermaids", "unicorns", "lions", "piranhas", "cuttlefish", "llamas", "dragons"},
 			Verbs:      []string{"love", "fancy", "eat", "bring", "fear", "aggravate", "detest", "adore", "belittle", "ravish"},
-			Adjectives: []string{"beautiful", "homely", "magical", "posh", "excellent", "ravishing", "lovely"},
+			Adjectives: []string{"beautiful", "homely", "magical", "posh", "excellent", "portly", "lovely"},
 			Objects:    []string{"teddy-bears", "diamonds", "buckets", "boxes", "dishes", "ornaments"},
 		}
 		generator = NewGenerator(dictionary, 2)
@@ -23,8 +23,8 @@ func TestGenerator(t *testing.T) {
 
 			Convey("It returns secure passwords", func() {
 				So(generator.generate(), ShouldEqual, "shouting unicorns eat posh buckets")
-				So(generator.generate(), ShouldEqual, "trotting lions fear ravishing teddy-bears")
-				So(generator.generate(), ShouldEqual, "trotting mermaids aggravate ravishing buckets")
+				So(generator.generate(), ShouldEqual, "trotting lions fear portly teddy-bears")
+				So(generator.generate(), ShouldEqual, "trotting mermaids aggravate portly buckets")
 			})
 
 			Convey("Consisting of 5 words each", func() {
