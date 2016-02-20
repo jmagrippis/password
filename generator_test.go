@@ -113,7 +113,27 @@ func TestGenerator(t *testing.T) {
 
 		Convey("Given I change to suffix", func() {
 
-			Convey("It ends the sentence with the given suffix", nil)
+			Convey("It ends the sentence with the given suffix", func() {
+				var x string = "!"
+				generator.setSuffix(x)
+				password := generator.generate()
+				So(password, ShouldEqual, "shouting unicorns eat posh buckets!")
+				last, _ := utf8.DecodeLastRuneInString(password)
+				So(string(last), ShouldEqual, x)
+
+				x = "爱"
+				generator.setSuffix(x)
+				password = generator.generate()
+				last, _ = utf8.DecodeLastRuneInString(password)
+				So(string(last), ShouldEqual, x)
+
+				x = "xoxo"
+				suffixCharacterCount := utf8.RuneCountInString(x)
+				generator.setSuffix(x)
+				password = generator.generate()
+				var endingCharacters = string(password[len(password)-suffixCharacterCount:])
+				So(endingCharacters, ShouldEqual, x)
+			})
 
 		})
 

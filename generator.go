@@ -18,6 +18,7 @@ type Generator struct {
 	wordCount  uint8
 	delimiter  string
 	prefix     string
+	suffix     string
 }
 
 type Dictionary struct {
@@ -47,6 +48,10 @@ func (g Generator) generate() string {
 		result = strings.Join([]string{g.prefix, result}, "")
 	}
 
+	if g.suffix != "" {
+		result = strings.Join([]string{result, g.suffix}, "")
+	}
+
 	return result
 }
 
@@ -67,6 +72,11 @@ func (g *Generator) setDelimiter(delimiter string) {
 // setPrefix sets the prefix used to start the sentence
 func (g *Generator) setPrefix(prefix string) {
 	g.prefix = prefix
+}
+
+// setSuffix sets the suffix used to end the sentence
+func (g *Generator) setSuffix(suffix string) {
+	g.suffix = suffix
 }
 
 // NewGenerator seeds the RNG and returns a password Generator with the given Dictionary
