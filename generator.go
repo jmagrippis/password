@@ -30,7 +30,7 @@ type Dictionary struct {
 }
 
 // Generates a secure password based on the given dictionary and settings
-func (g Generator) generate() string {
+func (g Generator) Generate() string {
 	selected := make([]string, g.wordCount)
 
 	selected[0] = g.dictionary.Adverbs[rand.Intn(len(g.dictionary.Adverbs))]
@@ -60,7 +60,7 @@ func (g Generator) generate() string {
 }
 
 // setWordCount sets the number of words returned by the generate function
-func (g *Generator) setWordCount(wordCount uint8) error {
+func (g *Generator) SetWordCount(wordCount uint8) error {
 	if wordCount < minWordCount {
 		return errors.New("Cannot return so few words!")
 	}
@@ -69,27 +69,27 @@ func (g *Generator) setWordCount(wordCount uint8) error {
 }
 
 // setDelimeter sets the delimiter used to break up the words of the sentence
-func (g *Generator) setDelimiter(delimiter string) {
+func (g *Generator) SetDelimiter(delimiter string) {
 	g.delimiter = delimiter
 }
 
 // setPrefix sets the prefix used to start the sentence
-func (g *Generator) setPrefix(prefix string) {
+func (g *Generator) SetPrefix(prefix string) {
 	g.prefix = prefix
 }
 
 // setSuffix sets the suffix used to end the sentence
-func (g *Generator) setSuffix(suffix string) {
+func (g *Generator) SetSuffix(suffix string) {
 	g.suffix = suffix
 }
 
 // setTitleCase defines whether the generator should use Title Case for its return strings
-func (g *Generator) setTitleCase(useTitleCase bool) {
+func (g *Generator) SetTitleCase(useTitleCase bool) {
 	g.useTitleCase = useTitleCase
 }
 
 // reseed reseeds the random number generator
-func (g *Generator) reseed(seed int64) {
+func (g *Generator) Reseed(seed int64) {
 	rand.Seed(seed)
 }
 
