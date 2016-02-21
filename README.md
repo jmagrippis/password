@@ -46,18 +46,24 @@ pass = generator.Generate()
 // pass = "slapping-❤-mermaids-❤-fear-❤-excellent-❤-diamonds"
 
 generator.SetDelimiter("|")
-generator.setPrefix("77")
-generator.setSuffix("42")
+generator.SetPrefix("77")
+generator.SetSuffix("42")
 pass = generator.Generate()
 // pass = "77cuddling|lions|eat|excellent|boxes42"
 
 generator.Reseed(time.Now().UnixNano())
 generator.SetTitleCase(true)
 generator.SetDelimiter(" ")
-generator.setPrefix("¡")
-generator.setSuffix("!")
+generator.SetPrefix("¡")
+generator.SetSuffix("!")
 pass = generator.Generate()
 // pass = "¡Cuddling Piranhas Fear Beautiful Diamonds!"
+
+generator.SetWordCount(7)
+generator.SetPrefix("")
+generator.SetSuffix("")
+pass = generator.Generate()
+// pass = "Jumping Mermaids Bring Posh Magical Beautiful Teddy-Bears!"
 ```
 
 ## Testing
