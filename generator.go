@@ -46,11 +46,13 @@ func (g Generator) Generate() string {
 	}
 	selected[key] = g.dictionary.Objects[rand.Intn(len(g.dictionary.Objects))]
 
-	result := strings.Join(selected, g.delimiter)
-
 	if g.useTitleCase {
-		result = strings.Title(result)
+		for key, _ := range selected {
+			selected[key] = strings.Title(selected[key])
+		}
 	}
+
+	result := strings.Join(selected, g.delimiter)
 
 	if g.prefix != "" {
 		result = strings.Join([]string{g.prefix, result}, "")
