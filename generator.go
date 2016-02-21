@@ -1,3 +1,4 @@
+// Package password provides a memorable password generator.
 package password
 
 import (
@@ -12,6 +13,7 @@ const (
 	defaultDelimiter string = " "
 )
 
+// Generator takes a Dictionary and returns memorable passwords according to its set properties.
 type Generator struct {
 	dictionary   *Dictionary
 	wordCount    uint8
@@ -21,6 +23,8 @@ type Generator struct {
 	useTitleCase bool
 }
 
+// Dictionary has properties for various categories of words and is fed to a Generator
+// to produce memorable passwords.
 type Dictionary struct {
 	Adjectives []string
 	Subjects   []string
@@ -29,7 +33,7 @@ type Dictionary struct {
 	Objects    []string
 }
 
-// Generates a secure password based on the given dictionary and settings
+// Generates a secure password based on the given dictionary and settings.
 func (g Generator) Generate() string {
 	selected := make([]string, g.wordCount)
 
@@ -59,7 +63,7 @@ func (g Generator) Generate() string {
 	return result
 }
 
-// setWordCount sets the number of words returned by the generate function
+// setWordCount sets the number of words returned by the generate function.
 func (g *Generator) SetWordCount(wordCount uint8) error {
 	if wordCount < minWordCount {
 		return errors.New("Cannot return so few words!")
@@ -68,33 +72,33 @@ func (g *Generator) SetWordCount(wordCount uint8) error {
 	return nil
 }
 
-// setDelimeter sets the delimiter used to break up the words of the sentence
+// setDelimeter sets the delimiter used to break up the words of the sentence.
 func (g *Generator) SetDelimiter(delimiter string) {
 	g.delimiter = delimiter
 }
 
-// setPrefix sets the prefix used to start the sentence
+// setPrefix sets the prefix used to start the sentence.
 func (g *Generator) SetPrefix(prefix string) {
 	g.prefix = prefix
 }
 
-// setSuffix sets the suffix used to end the sentence
+// setSuffix sets the suffix used to end the sentence.
 func (g *Generator) SetSuffix(suffix string) {
 	g.suffix = suffix
 }
 
-// setTitleCase defines whether the generator should use Title Case for its return strings
+// setTitleCase defines whether the generator should use Title Case for its return strings.
 func (g *Generator) SetTitleCase(useTitleCase bool) {
 	g.useTitleCase = useTitleCase
 }
 
-// reseed reseeds the random number generator
+// reseed reseeds the random number generator.
 func (g *Generator) Reseed(seed int64) {
 	rand.Seed(seed)
 }
 
 // NewGenerator seeds the RNG and returns a password Generator with the given Dictionary
-// and the default settings
+// and the default settings.
 func NewGenerator(dictionary *Dictionary, seed int64) *Generator {
 	rand.Seed(seed)
 	return &Generator{
