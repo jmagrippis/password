@@ -12,14 +12,7 @@ func TestGenerator(t *testing.T) {
 	var generator *password.Generator
 
 	Convey("Given a new Generator with a set Dictionary and seed", t, func() {
-		dictionary := &password.Dictionary{
-			Adverbs:    []string{"cuddling", "slapping", "shouting", "jumping", "ducking", "mocking", "trotting", "galloping"},
-			Subjects:   []string{"mermaids", "unicorns", "lions", "piranhas", "cuttlefish", "llamas", "dragons"},
-			Verbs:      []string{"love", "fancy", "eat", "bring", "fear", "aggravate", "detest", "adore", "belittle", "ravish"},
-			Adjectives: []string{"beautiful", "homely", "magical", "posh", "excellent", "portly", "lovely"},
-			Objects:    []string{"teddy-bears", "diamonds", "buckets", "boxes", "dishes", "ornaments"},
-		}
-		generator = password.NewGenerator(dictionary, 2)
+		generator = getGenerator()
 
 		Convey("Given I just run it with no extra settings", func() {
 
@@ -159,4 +152,32 @@ func TestGenerator(t *testing.T) {
 
 	})
 
+}
+
+func BenchmarkSynchronousGeneration(b *testing.B) {
+	generator := getGenerator()
+	generator.SetTitleCase(true)
+
+	generator.SetDelimiter("-")
+	generator.SetSuffix("!")
+
+	passwords := make([]string, b.N)
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		passwords[i] = generator.Generate()
+	}
+}
+
+// getGenerator defines the dictionary and returns a new generator that will be seeded according to the current time.
+func getGenerator() *password.Generator {
+	dictionary := &password.Dictionary{
+		Adverbs:    []string{"cuddling", "slapping", "shouting", "jumping", "ducking", "mocking", "trotting", "galloping"},
+		Subjects:   []string{"mermaids", "unicorns", "lions", "piranhas", "cuttlefish", "llamas", "dragons"},
+		Verbs:      []string{"love", "fancy", "eat", "bring", "fear", "aggravate", "detest", "adore", "belittle", "ravish"},
+		Adjectives: []string{"beautiful", "homely", "magical", "posh", "excellent", "portly", "lovely"},
+		Objects:    []string{"teddy-bears", "diamonds", "buckets", "boxes", "dishes", "ornaments"},
+	}
+	return password.NewGenerator(dictionary, 2)
 }
